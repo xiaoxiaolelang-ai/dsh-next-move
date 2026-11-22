@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const source = fs.readFileSync(join(here, 'client.js'), 'utf8')
-const MARKER = 'dsh-next-steps/v1'
+const MARKER = 'dsh-next-move/v1'
 
 // --- 极简 hook shim：同步渲染一次 ---
 const React = {
@@ -29,7 +29,7 @@ globalThis.window = {
   },
 }
 // 在第一次渲染之前就塞好，插件的内存镜像只会读一次
-memory.set('dsh-next-steps:tails:v1', JSON.stringify({
+memory.set('dsh-next-move:tails:v1', JSON.stringify({
   're|40': { mode: 'latest', actions: [{ angle: 'standard', label: 'R1' }] },
 }))
 globalThis.document = { head: { appendChild() {} }, createElement: () => ({ dataset: {}, textContent: '' }) }
@@ -165,7 +165,7 @@ console.log('OK  重启还原：不串会话')
 // 12) 实时渲染时要顺手写进记忆，供下次重启用
 const liveWrite = mk([[35, [{ angle: 'standard', label: 'W1' }]]])
 settled({ sessionId: 'wr', seq: 40, turn: turnB, useChat: (sel) => sel(liveWrite) })
-const savedAll = JSON.parse(memory.get('dsh-next-steps:tails:v1') ?? '{}')
+const savedAll = JSON.parse(memory.get('dsh-next-move:tails:v1') ?? '{}')
 assert.deepEqual(savedAll['wr|40']?.actions?.map((a) => a.label), ['W1'], '实时渲染后必须把本轮建议写进记忆')
 console.log('OK  实时渲染写入轮次记忆')
 

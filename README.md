@@ -1,4 +1,4 @@
-# 下一步建议 · dsh-next-steps
+# 下一步建议 · dsh-next-move
 
 在每轮回复下方给出一组可点的下一步建议：**2×2 最多四格**，每一条都只属于它自己那一轮。
 
@@ -23,10 +23,10 @@
 ## 安装
 
 ```
-dsh plugin add dsh-next-steps
+dsh plugin add dsh-next-move
 ```
 
-或者插件管理器里添加 `dsh-next-steps`。
+或者插件管理器里添加 `dsh-next-move`。
 
 > 同一个「轮次尾部」如果还有别的插件也往里放建议按钮，会出现两排；那种情况下同一时间只启用一个。
 
@@ -35,7 +35,7 @@ dsh plugin add dsh-next-steps
 写在 profile 的 `cordis.patch.yml` 里本插件那一行的 `config` 下：
 
 ```yaml
-- id: next-steps
+- id: next-move
   config:
     maxActions: 4      # 1-4，默认 4
     history: latest    # latest=只在最新一轮显示（默认）；all=每轮都显示当轮的建议
@@ -69,13 +69,13 @@ dsh plugin add dsh-next-steps
 
 会话重新打开时，宿主会重放历史。重放出来的节点形状和实时流不一定一样，插件可能认不出里面那段数据，于是历史轮次的建议会消失。
 
-所以插件会**自己记一份**：每次实时渲染出建议时，按「会话 + 该轮的收尾 seq」写进 localStorage（键 `dsh-next-steps:tails:v1`，最多 400 条）。重启后如果节点重放认不出数据，就用记下的那一份；键里带着轮次，所以只可能是“这一轮自己的建议”，不会把上一轮的顶上来。
+所以插件会**自己记一份**：每次实时渲染出建议时，按「会话 + 该轮的收尾 seq」写进 localStorage（键 `dsh-next-move:tails:v1`，最多 400 条）。重启后如果节点重放认不出数据，就用记下的那一份；键里带着轮次，所以只可能是“这一轮自己的建议”，不会把上一轮的顶上来。
 
 代价：清掉站点数据（localStorage）后，历史轮次的建议就真的没了——但只影响历史，不影响新的一轮。
 
 ## 已知限制
 
-- 工具结果里那段给客户端读的 JSON（前缀 `dsh-next-steps/v1`）也会进入模型上下文，每次约几百 token。改用 host 的 session projection + `wire.view` 可以消掉，但目前没做。
+- 工具结果里那段给客户端读的 JSON（前缀 `dsh-next-move/v1`）也会进入模型上下文，每次约几百 token。改用 host 的 session projection + `wire.view` 可以消掉，但目前没做。
 - 如果宿主某轮没有提供 `turn.start.seq`，按轮定位会退化成"截至本轮"——那种情况下，某一轮没调用工具时可能沿用上一轮的建议。
 - 客户端不导出 `Config`，配置项不做 schema 校验，取值时按默认值兜底。
 
@@ -83,7 +83,7 @@ dsh plugin add dsh-next-steps
 
 三个脚本都在本包目录内，路径按脚本自身位置解析，从任何目录跑都可以：
 
-- `_test-next-steps.mjs`（13 项）：用假 React/假 ctx 驱动真实组件，覆盖逐轮投影、不继承上一轮、`latest`/`all` 两种模式、1/3 条跨列、缓存失效、跨会话隔离、兜底通道。
+- `_test-next-move.mjs`（13 项）：用假 React/假 ctx 驱动真实组件，覆盖逐轮投影、不继承上一轮、`latest`/`all` 两种模式、1/3 条跨列、缓存失效、跨会话隔离、兜底通道。
 - `_test-normalize.mjs`（5 项）：从 `index.js` 里抽出 `normalizeActions` 直接跑，覆盖推荐置顶、`stop` 沉底、去重、截断、非法输入过滤。
 - `_test-host.mjs`（5 项）：假 ctx 跑 Host 半边，验证工具注册、常驻提示的 section 顺序、`prompt: off` 时不注册。
 - `_test-actions.mjs`（7 项）：带状态的 hook shim，验证点击发送、**失败后可重试**、Shift+点击**追加**已有草稿、以及无障碍标记。
@@ -94,7 +94,7 @@ MIT
 
 ---
 
-# dsh-next-steps (English)
+# dsh-next-move (English)
 
 Clickable next-step suggestions under each reply: up to four, in a 2x2 grid, and **each turn only ever shows its own suggestions**.
 
@@ -113,7 +113,7 @@ Interaction: click sends the text as your message; **Shift+click** only fills th
 In the profile's `cordis.patch.yml`, on this plugin's row:
 
 ```yaml
-- id: next-steps
+- id: next-move
   config:
     maxActions: 4      # 1-4, default 4
     history: latest    # latest = newest turn only (default); all = every turn keeps its own

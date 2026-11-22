@@ -1,5 +1,5 @@
 /**
- * 下一步建议（dsh-next-steps）—— Client 半边。
+ * 下一步建议（dsh-next-move）—— Client 半边。
  *
  * 数据只走一条路：这一轮自己的工具结果。**没有共享 Map、没有 render 副作用、
  * 没有跨组件传递**——每个轮次尾部只回答一个纯问题：
@@ -10,13 +10,13 @@
  * 收尾序号另有 `seq` 参数可兜底。
  */
 window.__ModuleLoader__.load({
-  id: 'dsh-next-steps',
+  id: 'dsh-next-move',
   factory(require) {
     const React = require('react')
     const h = React.createElement
 
-    const NS = 'dsh-next-steps'
-    const MARKER = 'dsh-next-steps/v1'
+    const NS = 'dsh-next-move'
+    const MARKER = 'dsh-next-move/v1'
     /** 只显示最新一轮时，历史轮次整段不渲染。 */
     const VISIBLE_TIERS = { rec: 'rec', normal: 'normal', weak: 'weak' }
 
@@ -144,7 +144,7 @@ window.__ModuleLoader__.load({
      * 所以不会跨轮串味；取不到也只是没有，绝不回显上一轮。
      * ------------------------------------------------------------------ */
 
-    const TAIL_STORE = 'dsh-next-steps:tails:v1'
+    const TAIL_STORE = 'dsh-next-move:tails:v1'
     const TAIL_STORE_MAX = 400
 
     // 内存镜像：localStorage 只有本插件在写，读一次就够。
@@ -538,11 +538,11 @@ window.__ModuleLoader__.load({
     }
 
     return {
-      name: 'dsh-next-steps',
+      name: 'dsh-next-move',
       inject: ['slots', 'locale'],
       apply(ctx) {
-        ctx.effect(() => installStyles(ctx) ?? undefined, 'dsh-next-steps: styles')
-        ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'dsh-next-steps: dictionaries')
+        ctx.effect(() => installStyles(ctx) ?? undefined, 'dsh-next-move: styles')
+        ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'dsh-next-move: dictionaries')
         const bound = ctx.locale.bind(NS)
         const t = (key) => {
           const value = bound(key)
@@ -554,7 +554,7 @@ window.__ModuleLoader__.load({
         }, Capture))
         ctx.slots.inject('conversation.chat.turnTail', () => ctx.slots.register({
           name: 'conversation.chat.turnTail',
-          id: 'next-steps',
+          id: 'next-move',
           inject: (sessionId) => ({ sessionId }),
         }, createTail(ctx, t)))
       },

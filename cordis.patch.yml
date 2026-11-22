@@ -1,6 +1,6 @@
 - insert:
-    - id: next-steps
-      name: 'dsh-next-steps'
+    - id: next-move
+      name: 'dsh-next-move'
       config:
         maxActions: 4
         history: latest

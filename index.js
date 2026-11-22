@@ -1,5 +1,5 @@
 /**
- * 下一步建议（dsh-next-steps）—— Host 半边。
+ * 下一步建议（dsh-next-move）—— Host 半边。
  *
  * 只做一件事：注册 `suggest_next_steps` 工具。模型调它，参数里带 2-4 条建议，
  * 工具立刻返回，这一轮正常结束——不等人、不打断。
@@ -9,11 +9,11 @@
  * Schema 直接注册，零依赖；排序/去重/截断也在这里算一次，客户端照抄。
  */
 
-const name = 'dsh-next-steps'
+const name = 'dsh-next-move'
 const inject = ['tools']
 
 /** 客户端按这个前缀认领数据段；换版本就换前缀，旧客户端会自然忽略。 */
-const MARKER = 'dsh-next-steps/v1'
+const MARKER = 'dsh-next-move/v1'
 const ANGLES = ['cautious', 'standard', 'bold', 'alternative', 'stop']
 const MAX_ACTIONS = 4
 
@@ -115,8 +115,8 @@ function apply(ctx, config) {
       // 包一层：万一别的插件占了同名 section 或宿主 API 变了，也不能连累工具注册。
       try {
         ctx.effect(
-          () => systemPrompt.section({ name: "next-steps", order: 10250, text: PROMPT_TEXT }),
-          "dsh-next-steps: prompt section",
+          () => systemPrompt.section({ name: "next-move", order: 10250, text: PROMPT_TEXT }),
+          "dsh-next-move: prompt section",
         )
       } catch {}
 

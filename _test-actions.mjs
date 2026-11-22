@@ -1,7 +1,7 @@
 /**
  * 交互自检：点击发送、失败可重试、Shift+点击追加、无障碍标记。
  *
- * 与 _test-next-steps.mjs 的区别：那边用无状态的 hook shim 只验渲染结果，
+ * 与 _test-next-move.mjs 的区别：那边用无状态的 hook shim 只验渲染结果，
  * 这里需要"点击 → 状态变化 → 再渲染"，所以用一个最小的有状态 useState。
  */
 import fs from 'node:fs'
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const source = fs.readFileSync(join(here, 'client.js'), 'utf8')
-const MARKER = 'dsh-next-steps/v1'
+const MARKER = 'dsh-next-move/v1'
 
 // --- 有状态的最小 hook shim ---
 let states = []

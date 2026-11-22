@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const mod = await import(pathToFileURL(join(here, 'index.js')).href)
-assert.equal(mod.name, 'dsh-next-steps')
+assert.equal(mod.name, 'dsh-next-move')
 assert.deepEqual(mod.inject, ['tools'])
 
 function makeCtx(options = {}) {
@@ -30,7 +30,7 @@ console.log('OK  工具注册形状：parameters/output.render/execute 齐全')
 
 // 2) 常驻指令：order 与文案
 assert.ok(state.section, 'section registered')
-assert.equal(state.section.name, 'next-steps')
+assert.equal(state.section.name, 'next-move')
 assert.equal(state.section.order, 10250, '必须排在所有内置段之后（最后一个内置段是 10200）')
 assert.ok(state.section.text.includes('suggest_next_steps'))
 assert.ok(state.section.text.includes('Every reply gets a call'), '指令必须要求每轮调用')
@@ -61,8 +61,8 @@ const rendered = state.tool.output.render({ actions: [
 assert.equal(rendered.length, 2)
 assert.equal(rendered[0].type, 'text')
 const marker = rendered[1].text
-assert.ok(marker.startsWith('dsh-next-steps/v1\n'), 'marker prefix')
-const payload = JSON.parse(marker.slice('dsh-next-steps/v1\n'.length))
+assert.ok(marker.startsWith('dsh-next-move/v1\n'), 'marker prefix')
+const payload = JSON.parse(marker.slice('dsh-next-move/v1\n'.length))
 assert.equal(payload.mode, 'latest')
 assert.deepEqual(payload.actions.map((a) => a.label), ['照做', '先不做'])
 console.log('OK  render：MARKER 正确，推荐置顶 / stop 沉底，mode=latest')
